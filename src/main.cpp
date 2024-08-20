@@ -8,10 +8,11 @@
 #include <esp_wifi.h>
 #include <ArduinoJson.h>
 #include <WebSocketsServer.h>
+#include <spacecraft.h>
 // const char* ssid = "VSMI-Guest";
 // const char* password = "h3ll0vsmi";
-WebSocketsServer webSocket = WebSocketsServer(81);  // Sử dụng cổng 81
-std::vector<uint8_t> frame_data;  // Dùng để lưu trữ dữ liệu nhận được
+WebSocketsServer webSocket = WebSocketsServer(81); // Sử dụng cổng 81
+std::vector<uint8_t> frame_data;                   // Dùng để lưu trữ dữ liệu nhận được
 const char *ssid = "VIETTEL_txXZQ27z";
 const char *password = "CCF5A3K9";
 
@@ -129,24 +130,27 @@ void receivePixels(const std::vector<uint8_t> &data)
     }
 }
 
-void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-  switch(type) {
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
+{
+    switch (type)
+    {
     case WStype_BIN:
-      // Nhận dữ liệu và thêm vào frame_data
-      frame_data.insert(frame_data.end(), payload, payload + length);
-      // Kiểm tra nếu dữ liệu đã đầy đủ
-      if (frame_data.size() == 16384*2) {  // 16,384 bytes
-        // Xử lý dữ liệu frame_data
-        receivePixels(frame_data);
-        //Serial.println(frame_data.size());
-        // Ví dụ: chuyển đổi và hiển thị lên ma trận LED
-        frame_data.clear();  // Xóa dữ liệu sau khi xử lý
-      }
-      break;
+        // Nhận dữ liệu và thêm vào frame_data
+        frame_data.insert(frame_data.end(), payload, payload + length);
+        // Kiểm tra nếu dữ liệu đã đầy đủ
+        if (frame_data.size() == 16384 * 2)
+        { // 16,384 bytes
+            // Xử lý dữ liệu frame_data
+            receivePixels(frame_data);
+            // Serial.println(frame_data.size());
+            //  Ví dụ: chuyển đổi và hiển thị lên ma trận LED
+            frame_data.clear(); // Xóa dữ liệu sau khi xử lý
+        }
+        break;
     default:
         frame_data.clear();
-      break;
-  }
+        break;
+    }
 }
 
 void receivePixels(char *packet, int length)
@@ -299,6 +303,39 @@ void plasma_palette()
         fps = 0;
     }
 }
+
+void draw_spacecraft(int x, int y)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            uint16_t color = aircraft[j * 20 + i];
+            int _x = x + i;
+            int _y = y + i;
+            if (_x <= 128)
+            {
+                if (_y <= 64)
+                {
+                    dma_display->drawPixel(_x, _y, color);
+                }
+                else
+                {
+                    _y = _y - 64;
+                    _x = _x + 128;
+
+                    dma_display->drawPixel(_x, _y, color);
+                }
+            }
+            else
+            {
+            }
+
+            dma_display->drawPixel(_X, _y, color);
+        }
+    }
+}
+
 void setup()
 {
     // put your setup code here, to run once:
@@ -327,38 +364,10 @@ void setup()
     dma_display->begin();            // setup the LED matrix
     dma_display->setBrightness8(50); // 0-255
     dma_display->clearScreen();
-    //dma_display->fillScreenRGB888(0, 255, 0);
+    // dma_display->fillScreenRGB888(0, 255, 0);
     currentPalette = RainbowColors_p;
 }
 void loop()
 {
     webSocket.loop();
-    //int packetSize = udp.parsePacket();
-    // if (packetSize)
-    // {
-    //     int len = udp.read(incomingPacket, MAX_UDP_SIZE);
-    //     if (len > 0)
-    //     {
-    //         // Serial.println(len);
-    //         if (len < 1000)
-    //             ;
-    //         {
-    //             recieve_done = true;
-    //         }
-    //         receivePixels(incomingPacket, len);
-    //     }
-
-    //     // //Use PSRAM
-    //     // int len = udp.read(incomingPacket_psram, MAX_UDP_SIZE);
-    //     // if (len > 0) {
-    //     //     //receivePixels(incomingPacket_psram, len);
-    //     //     Serial.println(len);
-    //     // }
-    // }
-    // else
-    // {
-    //     // plasma_palette();
-    //     // Serial.println("No packet received");
-    // }
-    // plasma_palette();
 }
