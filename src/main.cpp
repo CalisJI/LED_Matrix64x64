@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
-#include <WiFiUdp.h>
+// #include <WiFiUdp.h>
 #include <FastLED.h>
 #include <esp_wifi.h>
 #include <ArduinoJson.h>
@@ -49,7 +49,6 @@ IPAddress subnet(255, 255, 255, 0);
 #define PANE_WIDTH PANEL_WIDTH *PANELS_NUMBER
 #define PANE_HEIGHT PANEL_HEIGHT
 
-#define MAX_UDP_SIZE 1468
 CRGB currentColor;
 CRGBPalette16 palettes[] = {HeatColors_p, LavaColors_p, RainbowColors_p, RainbowStripeColors_p, CloudColors_p};
 CRGBPalette16 currentPalette = palettes[0];
@@ -323,7 +322,6 @@ void draw_spacecraft(int x, int y)
                 {
                     _y = _y - 64;
                     _x = _x + 128;
-
                     dma_display->drawPixel(_x, _y, color);
                 }
             }
@@ -355,7 +353,7 @@ void setup()
 
     Serial.print("Connected to WiFi.");
     Serial.println(WiFi.localIP());
-    udp.begin(localUdpPort);
+    // udp.begin(localUdpPort);
 
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
