@@ -201,3 +201,5 @@ if __name__ == "__main__":
 
 ```
 
+### Select Image Page
+![](/img/webpage.jpg)
