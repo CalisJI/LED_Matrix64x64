@@ -1,4 +1,6 @@
-# Project stream frame via websocket using ESP32 to LED Panel 128x128
+# Project stream frame via websocket using ESP32 to LED Panel 128x128 with PlatformIO extension
+
+
 
 ### Pinout
 ![](/img/connector.jpg)
