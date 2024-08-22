@@ -203,3 +203,9 @@ if __name__ == "__main__":
 
 ### Select Image Page
 ![](/img/webpage.jpg)
+
+### Hardware
+- ESP32-S3 N8R2 Dual Type-C
+![](/img/esp32s3.jpg)
+- Pinout
+![](/img/esp32-s3_devkitc-1_pinlayout_v1.1.jpg)
