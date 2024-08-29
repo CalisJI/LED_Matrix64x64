@@ -1,5 +1,9 @@
 # Project stream frame via websocket using ESP32 to LED Panel 128x128 with PlatformIO extension
 
+### Configuration:
+![](/img/wire.png)
+
+**Connection Type:** `128x128` and `128x64`
 
 
 ### Pinout
